@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AME Station - 游戏王板块</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: linear-gradient(135deg, #0a0a2a 0%, #1a1200 100%);
+            color: #d4af37;
+            font-family: "Noto Sans JP", "Yu Gothic", "Hiragino Sans", "Meiryo", sans-serif;
+            padding: 20px 0;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        /* === 导航栏 === */
+        header {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #1a237e 0%, #8b0000 50%, #1a237e 100%);
+            color: #ffd700;
+            padding: 20px 0;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #ffd700;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1150px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .site-title h1 a {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(45deg, #ffd700, #d4af37, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+        
+        /* 鼠标悬停：亮金色 */
+        .site-title h1 a:hover {
+            background: linear-gradient(45deg, #ffd700, #ffec8b, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 
+                0 0 10px rgba(255, 215, 0, 0.5),
+                0 0 20px rgba(255, 215, 0, 0.3);
+            transform: scale(1.05);
+        }
+        
+        /* 点击状态：橙色 */
+        .site-title h1 a:active {
+            background: linear-gradient(45deg, #ff8c00, #ffa500, #ff8c00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 
+                0 0 10px rgba(255, 140, 0, 0.5),
+                0 0 20px rgba(255, 165, 0, 0.3);
+            transform: scale(0.95);
+        }
+
+        .site-subtitle {
+            font-size: 14px;
+            color: #ffffff;
+        }
+        
+        /* 图片容器 */
+        .image-container {
+            position: absolute;
+            right: 25%;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .image-container img {
+            width: 150px;
+            height: auto;
+            border: none;
+            background: transparent;
+        }
+        
+        /* === 主内容区 - 融合图片内容 === */
+        .main-content {
+            background: rgba(26, 18, 0, 0.8);
+            border: 2px solid #d4af37;
+            border-radius: 10px;
+            padding: 30px;
+            min-height: 500px;
+        }
+        
+        .section-title {
+            font-size: 22px;
+            color: #ffd700;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #8b0000;
+        }
+        
+        /* 商品列表样式 */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .product-item {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #d4af37;
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .product-item:hover {
+            transform: translateY(-5px);
+            border-color: #ffd700;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);
+        }
+        
+        .product-title {
+            color: #ffd700;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        
+        .product-tag {
+            display: inline-block;
+            background: #8b0000;
+            color: #ffffff;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            margin-right: 5px;
+        }
+        
+        /* 活动列表样式 */
+        .event-list {
+            margin-top: 30px;
+        }
+        
+        .event-item {
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 3px solid #8b0000;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: 0 5px 5px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .event-item:hover {
+            border-left-color: #ffd700;
+            transform: translateX(5px);
+        }
+        
+        .event-title {
+            color: #ffd700;
+            font-size: 14px;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .nav-content {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            
+            .image-container {
+                position: static;
+                margin-left: auto;
+                transform: none;
+            }
+            
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body style="background-image: url('img/8.jpg');
+ background-size: cover;
+ background-position: center;
+ background-repeat: no-repeat;
+ background-attachment: fixed;;">
+    <div class="container">
+        <!-- 导航栏 -->
+        <header>
+            <div class="nav-content">
+                <div class="site-title">
+                    <h1><a href="yugiho.html">AME Station</a></h1>
+                    <div class="site-subtitle">-决斗与热血的小站-</div>
+                </div>
+                <div class="image-container">
+                    <a href="https://www.yugioh-card-cn.com/"><img src="img/7.png" alt="Yu-Gi-Oh!"></a>
+                </div>
+            </div>
+        </header>
+        
+        <!-- 主内容区 - 融合图片内容 -->
+        <main class="main-content">
+            <h2 class="section-title">🎴 游戏王官方商品 & 活动公告</h2>
+            
+            <!-- 限定商品区 -->
+            <h3 style="color: #ffd700; margin: 20px 0 15px 0; border-left: 3px solid #ff8c00; padding-left: 10px;">
+                🏪 旗舰公认店限定商品
+            </h3>
+            
+            <div class="product-grid">
+                <div class="product-item">
+                    <span class="product-tag">线上销售</span>
+                    <div class="product-title">游戏王 公式卡片游戏 决斗怪兽 决斗万全套组 驱魔姐妹</div>
+                </div>
+                
+                <div class="product-item">
+                    <span class="product-tag">线上销售</span>
+                    <div class="product-title">游戏王 公式卡片游戏 决斗怪兽 决斗万全套组 龙女仆</div>
+                </div>
+                
+                <div class="product-item">
+                    <span class="product-tag">线上销售</span>
+                    <div class="product-title">游戏王 公式卡片游戏 决斗怪兽 完全卡册 白之故事</div>
+                </div>
+                
+                <div class="product-item">
+                    <span class="product-tag">线上销售</span>
+                    <div class="product-title">游戏王 决斗怪兽 闪刀姬 雀&萝杰 决斗套装</div>
+                </div>
+                
+                <div class="product-item">
+                    <span class="product-tag">线上预约</span>
+                    <div class="product-title">游戏王 决斗怪兽 决斗者外卡套 印记之龙套组</div>
+                </div>
+                
+                <div class="product-item">
+                    <span class="product-tag">线上销售</span>
+                    <div class="product-title">游戏王 决斗怪兽 壶之收藏集 追加特典</div>
+                </div>
+            </div>
+            
+            <!-- 活动公告区 -->
+            <h3 style="color: #ffd700; margin: 30px 0 15px 0; border-left: 3px solid #ff8c00; padding-left: 10px;">
+                🎉 特别活动 & 公告
+            </h3>
+            
+            <div class="event-list">
+                <div class="event-item">
+                    <div class="event-title">游戏王 决斗怪兽25周年编年史 side：团结&骄傲抽奖活动</div>
+                </div>
+                
+                <div class="event-item">
+                    <div class="event-title">游戏王OCG 2024新年赠送红包袋活动</div>
+                </div>
+                
+                <div class="event-item">
+                    <div class="event-title">游戏王OCG斗怪兽 金闪稀有版本「カオス·ソルジャー」获取活动</div>
+                </div>
+                
+                <div class="event-item">
+                    <div class="event-title">游戏王卡片游戏官方小程序「一起来决斗」功能更新</div>
+                </div>
+                
+                <div class="event-item">
+                    <div class="event-title">游戏王简体中文官网卡片数据库正式上线!</div>
+                </div>
+                
+                <div class="event-item">
+                    <div class="event-title">关于「Yu-Gi-Oh! World Championship 2022」的通知</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 商品和活动项的悬停效果
+            const items = document.querySelectorAll('.product-item, .event-item');
+            items.forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px)';
+                    this.style.boxShadow = '0 5px 15px rgba(255, 215, 0, 0.2)';
+                });
+                item.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = 'none';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

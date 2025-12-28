@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ame Station ─ 兴趣使然的小站</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+
+        :root {
+            --water-blue: #a0e7e5;
+            --mint-green: #b8f2e6;
+            --ice-blue: #e0f7fa;
+            --glass-white: rgba(255,255,255,0.85);
+            --text-dark: #2c3e50;
+            --text-light: #7f8c8d;
+            --border-light: #e0e0e0;
+            --shadow-soft: 0 4px 20px rgba(0,0,0,0.06);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #f0f8ff 0%, #f0fff8 100%);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+      
+        .site-header {
+           background: rgba(102, 204, 255, 0.15);
+           box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid #ffffff66;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+		@media (max-width: 768px) {
+		  .site-header {
+		    padding: 1rem 0;
+		  }
+		  
+		  .header-container {
+		    flex-direction: column;
+		    text-align: center;
+		    gap: 1.5rem;
+		  }
+		  
+
+		  .block-nav {
+		    flex-direction: column;
+		    align-items: center;
+		    max-height: 0;
+		    overflow: hidden;
+		    transition: max-height 0.3s ease;
+		  }
+		  
+
+		  .mobile-menu-toggle {
+		    display: block;
+		    background: none;
+		    border: none;
+		    font-size: 1.5rem;
+		    cursor: pointer;
+		    padding: 0.5rem;
+		  }
+		}
+
+        .site-header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="water" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M0 50 Q 25 30, 50 50 T 100 50" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/></pattern></defs><rect width="100" height="100" fill="url(%23water)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .site-title-group h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+        }
+		
+
+        .site-subtitle {
+            font-size: 1rem;
+            color: var(--text-light);
+            font-weight: 300;
+        }
+
+        .search-area {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-box {
+            display: flex;
+            background: var(--glass-white);
+            border-radius: 20px;
+            padding: 0.5rem;
+            border: 1px solid rgba(255,255,255,0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .search-input {
+            border: none;
+            background: none;
+            padding: 0.5rem 1rem;
+            outline: none;
+            width: 280px;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        .search-input::placeholder {
+            color: var(--text-light);
+        }
+
+        .search-btn {
+            background: var(--water-blue);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            background: #8fd8d6;
+        }
+
+        .user-actions .login-btn {
+            background: var(--glass-white);
+            color: var(--text-dark);
+            border: 1px solid rgba(255,255,255,0.5);
+            padding: 0.75rem 1.5rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Noto Sans JP', sans-serif;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .user-actions .login-btn:hover {
+            background: rgba(255,255,255,0.95);
+            transform: translateY(-1px);
+        }
+
+
+        .main-container {
+            display: flex;
+            max-width: 1200px;
+            margin: 2rem auto;
+            gap: 2rem;
+            padding: 0 1rem;
+        }
+
+
+        .sidebar {
+            width: 240px;
+            flex-shrink: 0;
+        }
+
+        .nav-section {
+            background: var(--glass-white);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.5);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .nav-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--water-blue);
+        }
+
+        .nav-links {
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+            transition: all 0.3s ease;
+            border-radius: 6px;
+        }
+
+        .nav-links a:hover {
+            color: var(--water-blue);
+            background: rgba(160, 231, 229, 0.1);
+            padding-left: 0.5rem;
+        }
+
+        .nav-icon {
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+
+        .content-area {
+            flex: 1;
+        }
+
+        .welcome-card {
+            background: linear-gradient(135deg, var(--glass-white), rgba(240, 255, 240, 0.6));
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.5);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .welcome-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .welcome-subtitle {
+            font-size: 1rem;
+            color: var(--text-light);
+            font-weight: 300;
+        }
+
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .theme-card {
+            background: var(--glass-white);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.5);
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s ease;
+        }
+
+        .theme-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            border-color: var(--water-blue);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(224,224,224,0.5);
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .card-links {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .card-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.85rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .card-links a:hover {
+            color: var(--water-blue);
+            background: rgba(160, 231, 229, 0.1);
+        }
+
+        .card-content {
+            margin-bottom: 1rem;
+        }
+
+        .card-content p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .enter-btn {
+            background: var(--water-blue);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .enter-btn:hover {
+            background: #8fd8d6;
+            transform: translateY(-1px);
+        }
+
+
+        .showcase-area {
+            background: var(--glass-white);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.5);
+            box-shadow: var(--shadow-soft);
+            margin-bottom: 2rem;
+        }
+
+        .showcase-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(224,224,224,0.5);
+        }
+
+        .showcase-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .showcase-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .showcase-item {
+            background: rgba(255,255,255,0.5);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .showcase-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .showcase-item h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .showcase-item p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background: var(--glass-white);
+            margin: 10% auto;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            width: 400px;
+            max-width: 90%;
+            position: relative;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.5);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .close {
+            position: absolute;
+            right: 1.5rem;
+            top: 1.5rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid rgba(224,224,224,0.5);
+            border-radius: var(--radius-sm);
+            font-family: 'Noto Sans JP', sans-serif;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.5);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--water-blue);
+            box-shadow: 0 0 0 3px rgba(160, 231, 229, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--water-blue);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: #8fd8d6;
+            transform: translateY(-1px);
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .register-link a {
+            color: var(--water-blue);
+            text-decoration: none;
+        }
+
+        .site-footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(224,224,224,0.5);
+            margin-top: 3rem;
+        }
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+            
+            .theme-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-input {
+                width: 200px;
+            }
+            
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .showcase-content {
+                grid-template-columns: 1fr;
+            }
+        }
+		.theme-card:hover {
+		  background: rgba(160, 231, 229, 0.1);
+		  border-color: var(--water-blue);
+		  transform: translateY(-2px);
+		  box-shadow: 0 8px 25px rgba(160, 231, 229, 0.2);
+		}
+		
+
+		.theme-card:hover .card-title {
+		  color: var(--water-blue);
+		}
+		
+		.theme-card:hover .enter-btn {
+		  background: var(--water-blue);
+		  transform: translateY(-1px);
+		}
+    </style>
+</head>
+<body style="background-image: url('img/1.jpg'); background-size: cover;">
+<header class="site-header">
+	
+    <div class="header-container">
+        <div class="site-title-group">
+            <h1>Ame Station</h1>
+            <div class="site-subtitle">——あめ_ 前卫文化与电波系</div>
+        </div>
+        
+        <div class="search-area">
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="前往异世界...">
+                <button class="search-btn">🐧</button>
+            </div>
+            <div class="block-nav">
+                    <a href="#" class="nav-block" title="探索各国动漫世界">anime</a>
+                    <a href="#" class="nav-block" title="漫画艺术与图像小说天地">comic</a>
+                    <a href="#" class="nav-block" title="galgameとJRPG_ns_ps and so on">game</a>
+                    <a href="#" class="nav-block" title="轻小说与文学创作">novel</a>
+                    <a href="#" class="nav-block" title="音乐分享与独立音乐人">music</a>
+					<a href="马拉松.html" class="nav-block" title="人类的梦想与极限">marathon</a>
+                    <a href="#" class="nav-block" title="独特的Z世代风格与潮流">Z-style</a>
+                    <a href="#" class="nav-block" title="深入了解各种亚文化类型">subculture</a>
+                    <a href="#" class="nav-block" title="基础技术与实用教程">basic_technique</a>
+					<a href="yugiho.html" class="nav-block" title="决斗！">Yu-Gi-Oh!</a>
+					<a href="time.html" class="nav-block" title="查阅各种时间"！">time</a>
+                    <a href="#" class="nav-block" title="来聊聊天吧">community</a>
+					
+                </div>
+            </div>
+            <div class="user-actions">
+                <button class="login-btn" id="loginBtn">登录</button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="main-container">
+
+    <aside class="sidebar">
+        <div class="nav-section">
+            <h3 class="nav-title">导航菜单</h3>
+            <ul class="nav-links">
+                <li><a href="#"><span class="nav-icon">📰</span>今日资讯</a></li>
+                <li><a href="导航.html"><span class="nav-icon">📚</span>资源小站</a></li>
+                <li><a href="#"><span class="nav-icon">⚡</span>一站速达</a></li>
+                <li><a href="#"><span class="nav-icon">🛠️</span>工具箱</a></li>
+                <li><a href="#"><span class="nav-icon">💭</span>我想做</a></li>
+            </ul>
+        </div>
+        
+        <div class="nav-section">
+            <h3 class="nav-title">快速链接</h3>
+            <ul class="nav-links">
+                <li><a href="#">加入社群/QQ</a></li>
+                <li><a href="#">你的意见</a></li>
+                <li><a href="#">我最喜欢</a></li>
+            </ul>
+        </div>
+    </aside>
+
+    <main class="content-area">
+        <div class="welcome-card">
+            <h2 class="welcome-title">欢迎来到 Ame Station</h2>
+            <p class="welcome-subtitle">你的前沿亚文化基地，发现更多有趣的内容</p>
+        </div>
+
+        <div class="theme-grid">
+
+            <article class="theme-card">
+                <div class="card-header">
+                    <h3 class="card-title">初音ミク</h3>
+                    <div class="card-links">
+                             <a href="https://www.crypton.co.jp/miku_eng" target="_blank">官网</a>
+                        <a href="https://zh.moegirl.org.cn/初音未来" target="_blank">百科</a>
+                        <a href="https://space.bilibili.com/399918500" target="_blank">B站</a>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <p>最新资讯：雪ミク2025主题曲发布！</p>
+                    <button class="enter-btn" onclick="openPage('https://www.crypton.co.jp/miku')">进入ミク世界</button>
+                </div>
+            </article>
+
+            <!-- Sakanaction -->
+            <article class="theme-card">
+                <div class="card-header">
+                    <h3 class="card-title">Sakanaction</h3>
+                    <div class="card-links">
+                        <a href="https://sakanaction.jp" target="_blank">官网</a>
+                        <a href="https://zh.moegirl.org.cn/Sakanaction" target="_blank">百科</a>
+                        <a href="https://music.163.com/#/artist?id=21377 target="_blank">音乐</a>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <p>乐队最新动态与作品信息</p>
+                    <button class="enter-btn" onclick="openPage('https://sakanaction.jp')">探索音乐世界</button>
+                </div>
+            </article>
+
+            <!-- Perfume -->
+            <article class="theme-card">
+                <div class="card-header">
+                    <h3 class="card-title">Perfume</h3>
+                    <div class="card-links">
+                        <a href="https://www.perfume-web.jp" target="_blank">官网</a>
+                        <a href="https://zh.moegirl.org.cn/Perfume" target="_blank">百科</a>
+                        <a href="https://music.163.com/#/artist?id=20965" target="_blank">163_music</a>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <p>电音女子组合最新活动</p>
+                    <button class="enter-btn" onclick="openPage('https://www.perfume-web.jp')">了解Perfume</button>
+                </div>
+            </article>
+			 <article class="theme-card">
+			                <div class="card-header">
+			                    <h3 class="card-title">相対性理論</h3>
+			                    <div class="card-links">
+			                        <a href="https://www.soutaiseiriron.com/" target="_blank">官网</a>
+			                        <a href="https://baike.baidu.com/item/相对性理论" target="_blank">百科</a>
+			                        <a href="https://music.163.com/#/artist?id=21319 target="_blank">163_music</a>
+			                    </div>
+			                </div>
+			                <div class="card-content">
+			                    <p>独立摇滚乐队，独特音乐风格</p>
+			                    <button class="enter-btn" onclick="openPage('https://www.soutaiseiriron.com/')">探索音乐世界</button>
+			                </div>
+			            </article>
+			
+			            <!-- 异世界情绪 -->
+			            <article class="theme-card">
+			                <div class="card-header">
+			                    <h3 class="card-title">ヰ世界情绪</h3>
+			                    <div class="card-links">
+			                        <a href="https://twitter.com/isekaithinking" target="_blank">X</a>
+			                        <a href="https://www.youtube.com/channel/UCX7f5b6e9v9V9v9V9V9V9V9V" target="_blank">YT</a>
+			                        <a href="https://music.163.com/#/artist?id=51020133" target="_blank">163_music</a>
+			                    </div>
+			                </div>
+			                <div class="card-content">
+			                    <p>新兴音乐创作者，空灵优美女声</p>
+			                    <button class="enter-btn" onclick="openPage('https://twitter.com/isekaithinking')">探索音乐世界</button>
+			                </div>
+			            </article>
+
+            <!-- 橘子狸 -->
+            <article class="theme-card">
+                <div class="card-header">
+                    <h3 class="card-title">有关橘子狸的一切</h3>
+                    <div class="card-links">
+                        <a href="https://user.qzone.qq.com/2827853565" target="_blank"  title="访问我的QQ空间主页">My Qzone</a>
+                        <a href="https://space.bilibili.com/396044466" target="_blank">B站</a>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <p>橘子狸相关资讯与资源</p>
+                    <button class="enter-btn" onclick="window.location.href='橘子狸.html'">了解可爱的内蒙古萌系角色橘子狸</button>
+                </div>
+            </article>
+        </div>
+
+       <section class="showcase-area">
+         <div class="showcase-header">
+           <h3 class="showcase-title">车万厨探头~Ciallo～(∠・ω< )⌒★</h3>
+         </div>
+
+         <div class="bilibili-video">
+           <div style="position: relative; padding: 75% 0 0;">
+             <iframe 
+               src="//player.bilibili.com/player.html?bvid=BV1x5411o7Kn&high_quality=1"
+               style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+               scrolling="no"
+               allowfullscreen>
+             </iframe>
+           </div>
+         </div>
+         
+         <div class="showcase-content">
+           <a href="https://www.bilibili.com/video/BV1T4411k7ta/" target="_blank" class="showcase-link">
+             <div class="showcase-item">
+               <h4>点击收听橘子狸喜欢的ミカヅキBIGWAVE</h4>
+               <p>秘密のメリーゴーランド</p>
+             </div>
+           </a>
+           
+           <a href="https://www.bilibili.com/video/BV1sP411y7gT/" target="_blank" class="showcase-link">
+             <div class="showcase-item">
+               <h4>点击收听橘子狸喜欢的Nyarons</h4>
+               <p>自己爱主义天使</p>
+             </div>
+           </a>
+         </div>
+       </section>
+       
+       <style>
+       .showcase-area {
+         transition: all 0.4s ease;
+       }
+       
+       .showcase-area:hover .showcase-item {
+         background: rgba(255, 209, 220, 0.25);
+         border-color: rgba(255, 182, 193, 0.6);
+         transform: translateY(-2px);
+       }
+       
+       .showcase-area:hover .showcase-item:hover {
+         background: rgba(255, 182, 193, 0.35) !important;
+         transform: translateY(-3px) scale(1.02);
+       }
+       
+       .showcase-link {
+         text-decoration: none;
+         color: inherit;
+         display: block;
+       }
+       
+       .showcase-item h4, .showcase-item p {
+         text-decoration: none;
+         border: none;
+       }
+       
+       .showcase-item {
+         cursor: pointer;
+         transition: all 0.3s ease;
+       }
+       </style>
+<div id="loginModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 class="modal-title">用户登录</h2>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">邮箱地址</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">密码</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit" class="submit-btn">登录</button>
+        </form>
+        <div class="register-link">
+            还没有账号？<a href="#" id="registerLink">立即注册</a>
+        </div>
+    </div>
+</div>
+<div>
+	<img src="img/mikudance.gif"/>
+</div>
+<section class="page-navigation">
+  <a href="page2.html" class="kawaii-next-btn">
+    <span class="btn-text">次のページへ</span>
+    <span class="emoji">(๑•̀ㅂ•́)و✧ もっと見たい！</span>
+  </a>
+</section><footer class="site-footer">
+    版权所有 © 2026 Ame Station ─ 酩酊梅子雨的小站
+</footer>
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+	    setTimeout(() => {
+	        const searchInput = document.querySelector('.search-input');
+	        const searchBtn = document.querySelector('.search-btn');
+	        
+	        if (!searchInput || !searchBtn) return;
+	        
+	        searchInput.placeholder = "和度娘一起探索异世界...";
+	        const searchTips = [
+	            "搜索最新资讯",
+	            "查找游戏攻略", 
+	            "寻找音乐资源",
+	            "了解ACGN文化",
+	            "探索亚文化内容"
+	        ];
+	        
+	        let tipIndex = 0;
+	        const tipInterval = setInterval(() => {
+	            searchInput.placeholder = "和度娘一起探索异世界... " + searchTips[tipIndex];
+	            tipIndex = (tipIndex + 1) % searchTips.length;
+	        }, 3000);
+	        searchBtn.onclick = null;
+	        searchBtn.addEventListener('click', function(e) {
+	            e.preventDefault();
+	            clearInterval(tipInterval); 
+	            performBaiduSearch();
+	        });
+	        
+	        // 回车键搜索
+	        searchInput.addEventListener('keypress', function(e) {
+	            if (e.key === 'Enter') {
+	                e.preventDefault();
+	                clearInterval(tipInterval); 
+	                performBaiduSearch();
+	            }
+	        });
+	        function performBaiduSearch() {
+	            const query = searchInput.value.trim();
+	            
+	            if (!query) {
+	                alert('请输入要搜索的内容哦~ (｡･ω･｡)');
+	                searchInput.focus();
+	                return;
+	            }
+	            
+	            searchBtn.innerHTML = '😸';
+	            searchBtn.style.animation = 'spin 1s linear infinite';
+	        
+	            const siteKeywords = [];
+	            let searchQuery = query;
+	            
+	            if (siteKeywords.length > 0) {
+	                const siteConditions = siteKeywords.map(site => `site:${site}`).join(' OR ');
+	                searchQuery = `${query} (${siteConditions})`;
+	            }
+	            
+	            const encodedQuery = encodeURIComponent(searchQuery);
+	            const baiduUrl = `https://www.baidu.com/s?wd=${encodedQuery}`;
+	            
+	            console.log(`%c[百度搜索] 搜索关键词: "${searchQuery}"`, "background: linear-gradient(to right, #0066ff, #00ccff); color: white; padding: 8px; border-radius: 4px;");
+	            console.log(`%c搜索URL: ${baiduUrl}`, "color: #666; font-size: 12px;");
+	            
+	            setTimeout(() => {
+	                searchBtn.innerHTML = '🔍';
+	                searchBtn.style.animation = '';
+
+	                window.open(baiduUrl, '_blank');
+	                
+	                const successMessages = [
+	                    `正在为你搜索"${query}"...`,
+	                    `已找到${query}的相关内容！`,
+	                    `搜索完成，请查看新标签页~`,
+	                ];
+	                
+	                const randomMsg = successMessages[Math.floor(Math.random() * successMessages.length)];
+	                console.log(`%c${randomMsg}`, "color: #00cc66; font-weight: bold;");
+	                
+	            }, 500);
+	        }
+	        
+	        if (!document.querySelector('#search-spin-style')) {
+	            const spinStyle = document.createElement('style');
+	            spinStyle.id = 'search-spin-style';
+	            spinStyle.textContent = `
+	                @keyframes spin {
+	                    0% { transform: rotate(0deg); }
+	                    100% { transform: rotate(360deg); }
+	                }
+	            `;
+	            document.head.appendChild(spinStyle);
+	        }
+	        
+	    
+	        
+	    }, 100);
+	});
+const loginBtn = document.getElementById('loginBtn');
+const loginModal = document.getElementById('loginModal');
+const closeBtn = document.querySelector('.close');
+const loginForm = document.getElementById('loginForm');
+
+loginBtn.onclick = () => loginModal.style.display = 'block';
+closeBtn.onclick = () => loginModal.style.display = 'none';
+
+window.onclick = (e) => {
+    if (e.target === loginModal) loginModal.style.display = 'none';
+}
+
+loginForm.onsubmit = (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    
+    if (email && password) {
+        alert('Ciallo～(∠・ω< )⌒★');
+        loginModal.style.display = 'none';
+        loginForm.reset();
+    }
+};
+
+document.getElementById('registerLink').onclick = (e) => {
+    e.preventDefault();
+    alert('Ciallo～(∠・ω< )⌒★');
+};
+
+function openPage(url) {
+    window.open(url, '_blank');
+}
+</script>
+</body>
+</html><style>.container {
+  position: fixed;  
+  right: 20px;
+  bottom: 20px;
+  z-index: 999;   
+}
+
+.container img {
+  width: 120px;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(160, 231, 229, 0.3);
+  transition: all 0.3s ease;
+}
+
+.container img:hover {
+  transform: scale(1.05) rotate(3deg);
+  filter: brightness(1.1);
+}
+.block-nav {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.nav-block {
+    background: var(--glass-white);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.5);
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1.5rem;
+    text-decoration: none;
+    color: var(--text-dark);
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-soft);
+}
+
+.nav-block:hover {
+    background: rgba(160, 231, 229, 0.3);
+    border-color: var(--water-blue);
+    color: aqua;
+    transform: translateY(-2px);
+}
+<style>
+.site-header {
+    background: rgba(248, 246, 244, 0.95) !important;
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+    position: relative;
+    z-index: 1000;
+}
+
+.site-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(160, 231, 229, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(184, 242, 230, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.header-container {
+    position: relative;
+    z-index: 2;
+}
+
+.search-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    margin: 0 auto;
+    max-width: 800px;
+}
+
+.block-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 24px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 
+        0 4px 20px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.nav-block {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+    border: 1.5px solid rgba(160, 231, 229, 0.3);
+    border-radius: 20px;
+    padding: 8px 16px;
+    text-decoration: none;
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 13px;
+    font-family: 'Noto Sans JP', sans-serif;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 
+        0 2px 8px rgba(0, 0, 0, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.3px;
+}
+
+.nav-block::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent,
+        rgba(160, 231, 229, 0.3),
+        transparent);
+    transition: left 0.6s ease;
+}
+
+.nav-block:hover::before {
+    left: 100%;
+}
+
+.nav-block:hover {
+    background: linear-gradient(135deg, rgba(224, 247, 250, 0.9), rgba(200, 240, 255, 0.8));
+    border-color: #a0e7e5;
+    color: #2c3e50;
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 
+        0 6px 20px rgba(160, 231, 229, 0.2),
+        0 3px 10px rgba(160, 231, 229, 0.1);
+}
+
+.site-title-group h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 0.25rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.site-subtitle {
+    font-size: 1rem;
+    color: #7f8c8d;
+    font-weight: 300;
+}
+
+.search-box {
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(160, 231, 229, 0.4);
+    border-radius: 25px;
+    padding: 8px;
+    backdrop-filter: blur(10px);
+    box-shadow: 
+        0 4px 15px rgba(0, 0, 0, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.search-input {
+    background: transparent;
+    border: none;
+    color: #2c3e50;
+}
+
+.search-input::placeholder {
+    color: #7f8c8d;
+}
+
+.search-btn {
+    background: linear-gradient(135deg, #a0e7e5, #b8f2e6);
+    transition: all 0.3s ease;
+}
+
+.search-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(160, 231, 229, 0.4);
+}
+
+.user-actions .login-btn {
+    background: linear-gradient(135deg, #a0e7e5, #b8f2e6);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    color: #2c3e50;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(160, 231, 229, 0.3);
+}
+
+.user-actions .login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(160, 231, 229, 0.4);
+}
+
+@media (max-width: 768px) {
+    .block-nav {
+        gap: 6px;
+        padding: 10px;
+        border-radius: 20px;
+    }
+    
+    .nav-block {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+    
+    .search-area {
+        gap: 12px;
+    }
+}
+
+.site-header::after {
+    content: '✦';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: rgba(160, 231, 229, 0.6);
+    font-size: 14px;
+    animation: sparkle 3s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+</style>

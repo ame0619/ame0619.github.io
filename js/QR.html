@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>联系我们</title>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    #qrcode {
+      margin: 20px auto;
+    }
+    .qrcode-table {
+      border: none;
+      border-collapse: collapse;
+      margin: 0 auto;
+    }
+    .qrcode-cell {
+      width: 8px;
+      height: 8px;
+    }
+    .dark {
+      background-color: #6cf;
+    }
+    .light {
+      background-color:azure;
+    }
+  </style>
+</head>
+<body><body style="background-image: url('img/16.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;;">
+  <h2>请扫描二维码联系我们</h2>
+  
+  <div id="qrcode"></div>
+  
+  
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var contactInfo = "WeChat：NUM:2827853565\n\tQQ:2827853565:\n\tE-mail：2827853565@qq.com\n\t";
+      
+      // 使用 qrcode-generator
+      var qr = qrcode(0, 'M'); // 0=自动版本, M=纠错级别
+      qr.addData(contactInfo);
+      qr.make();
+      
+      var qrcodeContainer = document.getElementById("qrcode");
+      
+      // 创建表格来显示二维码
+      var table = document.createElement('table');
+      table.className = 'qrcode-table';
+      
+      for (var r = 0; r < qr.getModuleCount(); r++) {
+        var row = document.createElement('tr');
+        for (var c = 0; c < qr.getModuleCount(); c++) {
+          var cell = document.createElement('td');
+          cell.className = qr.isDark(r, c) ? 'dark' : 'light';
+          row.appendChild(cell);
+        }
+        table.appendChild(row);
+      }
+      
+      qrcodeContainer.innerHTML = '';
+      qrcodeContainer.appendChild(table);
+    });
+  </script>
+</body>
+</html>
