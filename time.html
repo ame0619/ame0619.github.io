@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AME STATION - 时间魔女的小站</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans JP', 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #fef7fb 0%, #fff0f5 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        .header {
+            border: 3px solid #ff7eb9;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: left;
+            margin-bottom: 25px;
+            background: linear-gradient(to right, #fff5f9, #fff);
+            box-shadow: 0 5px 15px rgba(255, 126, 185, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.6s;
+        }
+        
+        .header:hover::before {
+            left: 100%;
+        }
+        
+        .header:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(255, 126, 185, 0.25);
+            border-color: #ff5da2;
+        }
+        
+        .header:active {
+            transform: translateY(-2px) scale(0.99);
+        }
+        
+        .header h1 {
+            font-size: 2.8rem;
+            color: #e75480;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 0 #ffe0ee;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            font-weight: 700;
+        }
+        
+        .header:hover h1 {
+            color: #ff9ac1;
+        }
+        
+        .header:active h1 {
+            color: #ffb4d3;
+        }
+        
+        .header p {
+            font-size: 1.3rem;
+            color: #ff6b9d;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .header:hover p {
+            color: #ff4081;
+        }
+        
+        .gif-section {
+            min-height: 180px;
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .gif-img {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            border-radius: 8px;
+        }
+        
+        .gif-placeholder {
+            width: 100%;
+            max-width: 600px;
+            height: 150px;
+            background: linear-gradient(135deg, #ffd6e7 0%, #ffcfe0 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ff7eb9;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        .timeline-container {
+            margin-bottom: 30px;
+        }
+        
+        .time-bar {
+            display: flex;
+            align-items: center;
+            border: 3px solid #ff7eb9;
+            border-radius: 8px;
+            padding: 20px 25px;
+            margin-bottom: 15px;
+            background-color: #fff;
+            box-shadow: 0 3px 8px rgba(255, 126, 185, 0.15);
+            transition: all 0.3s ease;
+        }
+        
+        .time-bar:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 12px rgba(255, 126, 185, 0.25);
+        }
+        
+        .event-title {
+            font-size: 1.3rem;
+            color: #ff6b9d;
+            font-weight: 600;
+            min-width: 280px;
+            padding-right: 25px;
+        }
+        
+        .countdown-display {
+            flex: 1;
+            font-family: 'Courier New', monospace;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .time-number {
+            color: #d8b4ff;
+            display: inline-block;
+            min-width: 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+            font-weight: 700;
+        }
+        
+        .time-number.negative {
+            color: #ff6b6b;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .time-update {
+            animation: pulse 0.2s ease;
+        }
+        
+        .time-unit {
+            color: #ff6b9d;
+            margin: 0 2px;
+            font-weight: 500;
+        }
+        
+        .jpg-section {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .jpg-img {
+            width: 120px;
+            height: 80px;
+            border-radius: 6px;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .jpg-img:hover {
+            opacity: 1;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .f1 {
+            background: linear-gradient(135deg, #ff7eb9 0%, #e75480 100%);
+            color: white;
+            text-align: center;
+            padding: 18px 25px;
+            margin: 30px auto 0;
+            font-size: 14px;
+            font-weight: 500;
+            width: 90%;
+            max-width: 700px;
+            border-radius: 10px 10px 0 0;
+            box-shadow: 0 -3px 15px rgba(0,0,0,0.08);
+            position: relative;
+        }
+        
+        .f1::after {
+            content: "✦";
+            color: rgba(255,255,255,0.6);
+            margin-right: 8px;
+        }
+        
+        .f1::before {
+            content: "✦";
+            color: rgba(255,255,255,0.6);
+            margin-left: 8px;
+        }
+        
+        @media (max-width: 900px) {
+            .header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .time-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .event-title {
+                min-width: auto;
+                padding-right: 0;
+                margin-bottom: 15px;
+                width: 100%;
+                font-size: 1.2rem;
+            }
+            
+            .countdown-display {
+                width: 100%;
+                font-size: 1.2rem;
+            }
+            
+            .gif-img, .gif-placeholder {
+                max-width: 450px;
+            }
+            
+            .jpg-img {
+                width: 100px;
+                height: 70px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .header p {
+                font-size: 1.1rem;
+            }
+            
+            .countdown-display {
+                font-size: 1.1rem;
+            }
+            
+            .time-number {
+                min-width: 35px;
+            }
+            
+            .gif-img, .gif-placeholder {
+                max-width: 350px;
+            }
+            
+            .f1 {
+                font-size: 12px;
+                padding: 15px 20px;
+                width: 95%;
+            }
+            
+            .jpg-section {
+                bottom: 10px;
+                right: 10px;
+            }
+            
+            .jpg-img {
+                width: 80px;
+                height: 60px;
+            }
+        }
+    </style>
+</head>
+<body style="background-image: url('img/13.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed;">
+    <a href="index.html" style="text-decoration: none;">
+        <header class="header">
+            <h1>AME STATION</h1>
+            <p>--时间魔女的小站</p>
+        </header>
+    </a>
+    
+    <section class="gif-section">
+        <img src="img/1.gif" alt="GIF图片" class="gif-img" onerror="this.style.display='none'; this.parentNode.innerHTML='<div class=\'gif-placeholder\'>&lt;x.gif图片，无边框&gt;</div>';">
+    </section>
+    
+    <div class="timeline-container" id="timelineContainer">
+    </div>
+    
+    <footer class="f1">版权所有&copy;  2026 Ame Station ─ 时间魔女的小站</footer>
+    
+    <div class="jpg-section">
+		<img src="img/2.gif" alt="JPG图片" class="jpg-img" onerror="this.style.display='none'; this.parentNode.innerHTML='';">
+        <img src="img/miku.gif" alt="JPG图片" class="jpg-img" onerror="this.style.display='none'; this.parentNode.innerHTML='';">
+        <img src="img/cat.gif" alt="JPG图片" class="jpg-img" onerror="this.style.display='none'; this.parentNode.innerHTML='';">
+		
+    </div>
+
+    <script>
+        const countdownEvents = [
+            {
+                id: 1,
+                title: "离内蒙古可爱的萌系角色橘子狸的农历生日还有",
+                targetDate: "2026-08-01T00:00:00" 
+            },
+            {
+                id: 2,
+                title: "距离考研初试还有",
+                targetDate: "2027-12-18T00:00:00" 
+            },
+            {
+                id: 3, 
+                title: "距离下一个暑假还有",
+                targetDate: "2026-06-27T00:00:00" 
+            },
+            {
+                id: 4,
+                title: "距离下一个寒假还有",
+                targetDate: "2026-01-02T17:00:00" 
+            }
+        ];
+        
+        let previousTimes = {};
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('timelineContainer');
+            
+            countdownEvents.forEach(event => {
+                previousTimes[event.id] = {};
+                
+                const timeBar = document.createElement('div');
+                timeBar.className = 'time-bar';
+                timeBar.id = `time-bar-${event.id}`;
+                timeBar.innerHTML = `
+                    <div class="event-title">${event.title}</div>
+                    <div class="countdown-display" id="countdown-${event.id}">
+                        <span class="time-number" id="years-${event.id}">0</span><span class="time-unit">年</span>
+                        <span class="time-number" id="months-${event.id}">0</span><span class="time-unit">月</span>
+                        <span class="time-number" id="days-${event.id}">0</span><span class="time-unit">日</span>
+                        <span class="time-number" id="hours-${event.id}">0</span><span class="time-unit">小时</span>
+                        <span class="time-number" id="minutes-${event.id}">0</span><span class="time-unit">分</span>
+                        <span class="time-number" id="seconds-${event.id}">0</span><span class="time-unit">秒</span>
+                    </div>
+                `;
+                container.appendChild(timeBar);
+            });
+            
+            function updateAllCountdowns() {
+                countdownEvents.forEach(event => {
+                    const timeLeft = calculateTimeLeft(event.targetDate);
+                    updateCountdownDisplay(event.id, timeLeft);
+                });
+            }
+            
+            function calculateTimeLeft(targetDateString) {
+                const targetDate = new Date(targetDateString);
+                const now = new Date();
+                
+                const diff = targetDate - now;
+                
+                if (diff <= 0) {
+                    const pastDiff = now - targetDate;
+                    
+                    const years = Math.floor(pastDiff / (1000 * 60 * 60 * 24 * 365.25));
+                    const months = Math.floor((pastDiff % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24 * 30.44));
+                    const days = Math.floor((pastDiff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((pastDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((pastDiff % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((pastDiff % (1000 * 60)) / 1000);
+                    
+                    return {
+                        isPast: true,
+                        years: -years,
+                        months: -months,
+                        days: -days,
+                        hours: -hours,
+                        minutes: -minutes,
+                        seconds: -seconds
+                    };
+                }
+                
+                const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+                const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24 * 30.44));
+                const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                
+                return {
+                    isPast: false,
+                    years: years,
+                    months: months,
+                    days: days,
+                    hours: hours,
+                    minutes: minutes,
+                    seconds: seconds
+                };
+            }
+            
+            function updateCountdownDisplay(eventId, timeLeft) {
+                const timeUnits = ['years', 'months', 'days', 'hours', 'minutes', 'seconds'];
+                timeUnits.forEach(unit => {
+                    const element = document.getElementById(`${unit}-${eventId}`);
+                    if (element) {
+                        const newValue = timeLeft[unit];
+                        const oldValue = previousTimes[eventId][unit];
+                        
+                        if (oldValue !== undefined && oldValue !== newValue) {
+                            element.classList.add('time-update');
+                            setTimeout(() => {
+                                element.classList.remove('time-update');
+                            }, 200);
+                        }
+                        
+                        const absValue = Math.abs(newValue);
+                        element.textContent = absValue < 10 ? '0' + absValue : absValue;
+                        
+                        if (newValue < 0) {
+                            element.classList.add('negative');
+                        } else {
+                            element.classList.remove('negative');
+                        }
+                        
+                        previousTimes[eventId][unit] = newValue;
+                    }
+                });
+            }
+            
+            updateAllCountdowns();
+            setInterval(updateAllCountdowns, 1000);
+            
+            const timeBars = document.querySelectorAll('.time-bar');
+            timeBars.forEach(bar => {
+                bar.addEventListener('click', function() {
+                    this.style.transform = 'translateY(-5px)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 200);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
